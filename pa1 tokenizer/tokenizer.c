@@ -60,28 +60,50 @@ char *TKGetNextToken( TokenizerT * tk ){
 	char *draft = tk->input; 
 	int i = 0;
 	int j = 0;
-	char *word;
+	char *word = (char *)malloc(sizeof(tk->input)+1);
 	int *dec = 0;
 	int *oct = 0;
 	int *hex = 0;
-	
+	char *token;
+	int wordFlag = 0;
 	//loop through each char in raw input string
 	while(draft[i]!='\0'){
 
+
+		//white space
+		if( draft[i] == ' ' ){
+			return token;
+			i++;
+			continue;
+		}
+
 		//getting a word
-		if( isalpha(draft[i])>0 && draft[i+1]!='\0' ){
+		//has to start with a letter
+		//proceeding chars can be alphanumeric
+		/*
+		if( isalpha(draft[i] ) > 0){ 
 			word[j] = draft[i];
+			printf("token word is %c\n", word[j]);
+			wordFlag=1;
 			j++;
-		}else{
-			printf("word \"%s\"\n", word);
+			i++;
+			continue;
+		}
+		if( draft[i+1] == '\0' ){
+			wordFlag = 0;
+			printf("word done is %s\n", word);
 			return word;
 		}
-  	
+		else{
+			printf("word is %s\n", word);	
+			wordFlag = 0;
+			return word;
+		}
+		*/	
 		//binary operator switch table	
 		switch(draft[i]){
 			case '(' :
 				printf("left paranthesis \"(\"\n");
-				break;
 			case ')' :
 				printf("right paranthesis \")\"\n");
 				break;
@@ -129,13 +151,31 @@ char *TKGetNextToken( TokenizerT * tk ){
 				break;
 			case '\\' :
 				printf("escape character \"\\\"\n");
-				break;
-		
+				
 			default :
-				break;
+				return word;
 			
 		}
-
+		
+		//word
+		if( isalpha(draft[i] ) > 0){ 
+			word[j] = draft[i];
+			printf("token word is %c\n", word[j]);
+			wordFlag=1;
+			j++;
+			i++;
+			continue;
+		}
+		if( draft[i+1] == '\0' ){
+			wordFlag = 0;
+			printf("word done is %s\n", word);
+			return word;
+		}
+		else{
+			printf("word is %s\n", word);	
+			wordFlag = 0;
+			return word;
+		}
 
 
 		i++;
@@ -167,11 +207,13 @@ int main(int argc, char **argv) {
 	
 	//take input from command line
 	char *inputString;	
-	inputString = argv[1];;	
+	inputString = argv[1];	
 	//tokenize string
 	
 	TokenizerT *tok = TKCreate(inputString);
+	
 	TKGetNextToken( tok );
+	free( tok );
 	//printf("print out %s\n", TKGetNextToken(tok));
 
 	//print out each token

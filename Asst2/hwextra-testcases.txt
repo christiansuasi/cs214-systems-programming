@@ -1,0 +1,64 @@
+christian suasi & alec fray
+systems programming cs214 spring2016
+
+
+testcase 1 empty block size
+input:
+	int *ptr = (int*) malloc(0);
+	ERROR! Cannot malloc size 0 bytes in FILE: 'main.c' on LINE: '12
+
+
+testcase 2 mementries fit into myblock, no errors
+input:
+	int *ptr1 = (int*) malloc(sizeof(int));
+	*ptr1 = 123;
+output:
+	SUCCESS! mymalloc ran perfectly
+
+
+testcase 3 mementry is equal to myblock size
+input:
+	int*ptr2 = (int*)malloc (5000);
+output:
+	ERROR! No space available in on LINE: 21 in FILE: main.c
+
+
+testcase 4 mementry is greater than myblock size
+input:
+	int *ptr3 = (int*) malloc(6000);
+output:
+	ERROR! No space available in on LINE: 25 in FILE: main.c
+
+
+testcase 5 freeing unalloacted memory
+input:
+	int x = 100;
+	free ( &x );
+output:
+	ERROR! Address passed was not returned from mymalloc() or has already been freed on LINE: 30 in main.c
+
+
+testcase 6 freeing an already freed ptr
+input:
+	free( ptr );
+	free( ptr );
+output:
+ERROR! Address passed was not returned from mymalloc() or has already been freed on LINE: 35 in main.c
+
+
+testcase 7 perfectly working free
+input:
+	int *ptr4 = malloc(32);
+	free ( ptr 4 );
+
+
+output:
+	SUCCESS! mymalloc ran perfectly
+
+
+testcase 8 not all mementries were freed
+input:
+	atexit(isAllFree)
+output:
+	ERROR! Not all mementries were freed
+
